@@ -46,7 +46,7 @@ root_name = input("Agora digite o nome da partição que você vai escolher como
 efi_path = "/dev/" + efi_name
 root_path = "/dev/" + root_name
 
-if not (os.path.exists(efi_name) or os.path.exists(root_name)):
+if not os.path.exists(efi_name) or not os.path.exists(root_name):
     print(
         "Uma ou mais partições não foram encontradas em /dev/.\nEncerrando instalador."
     )
