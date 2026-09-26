@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 
 print("Definindo o layout do teclado como br-abnt2... \n loadkeys br-abnt2 \n")
 
@@ -23,7 +24,8 @@ disk_drive = input("Digite o nome do drive, ex: sda")
 disk_drive_path = "/dev/" + disk_drive
 
 if not os.path.exists(disk_drive_path):
-    print("Não encontrei nada disso aqui não viu...")
+    print("Não encontrei nada disso aqui não viu...\nEncerrando instalador.")
+    quit()
 
 print(
     "Agora você vai precisar de particionar sozinho. Eu não posso fazer isso por você, por que eu não sou adivinhador.\nSe você sair do fdisk eu vou assumir que você já terminou de particionar.\n fdisk /dev/"
