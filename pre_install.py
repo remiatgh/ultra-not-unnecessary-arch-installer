@@ -43,8 +43,36 @@ efi_name = input(
 )
 root_name = input("Agora digite o nome da partição que você vai escolher como root (/)")
 
+efi_path = "/dev/" + efi_name
+root_path = "/dev/" + root_name
+
 if not (os.path.exists(efi_name) or os.path.exists(root_name)):
     print(
         "Uma ou mais partições não foram encontradas em /dev/.\nEncerrando instalador."
     )
     quit()
+
+quer_formatar_efi = input(
+    "Quer formatar a partição EFI? ("
+    + efi_name
+    + ") Isso é opcional, e SE CERTIFIQUE DE QUE É ESSA PARTIÇÃO MESMO E FORMATAR PODE GERAR PERCA DE DADOS. (S ou N): "
+)
+quer_formatar_root = input(
+    "Quer formatar a partição ROOT? ("
+    + root_name
+    + ") Isso é definitivamente nescessário, e SE CERTIFIQUE DE QUE É ESSA PARTIÇÃO MESMO E FORMATAR PODE GERAR PERCA DE DADOS. (S ou N): "
+)
+
+if quer_formatar_efi.lower() == "s":
+    subprocess.run(["mkfs.fat", "-F", "32", efi_path])
+
+if quer_formatar_root.lower() == "s":
+    subprocess.run(["mkfs.ext4", root_path])
+else:
+    print("Não posso prosseguir sem formatar a partição ROOT.")
+    quit()
+
+print("Agora vou montar a partição EFI e ROOT...")
+
+subprocess.run(["mount", "--mkdir", efi_path, "/mnt/boot"])
+subprocess.run(["mount", root_path, "/mnt"])
